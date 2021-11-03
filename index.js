@@ -9,19 +9,20 @@ dbConeccion();
 // App de Express
 const app = express();
 
+//Lectura y parseo del body de una peticion http
+app.use(express.json());
+
 // Node Server
 const server = require('http').createServer(app);
 module.exports.io = require('socket.io')(server);
 require('./sockets/socket');
 
-
-
-
 // Path público
 const publicPath = path.resolve(__dirname, 'public');
 app.use(express.static(publicPath));
 
-
+//Rutas
+app.use('/api/login', require('./routes/auth'));
 
 
 
