@@ -48,10 +48,52 @@ const crearUsuario = async (req, res = response) => {
             msg: 'Error en el servidor'
         });
     }
+}
 
+const login = async (req, res = response) => {
+    const { email, password } = req.body;
+    try {
+        //Validar email
+        const usuario = await Usuario.findOne({ email });
+        if (!usuario) {
+            return res.status(404).json({
+                ok: false,
+                msg: "Email no encontrado"
+            });
+        }
 
+        //Validar password
+        const validarPassword = bcrypt.compareSync(password, usuario.password);
+        if (!validarPassword) {
+            return res.status(400).json({
+                ok: false,
+                msg: "Password incorrecto"
+            });
+        }
+
+        //Generamos el JWT
+        const token = await generarJWT(usuario.id);
+
+        res.json({
+            ok: true,
+            //Se manda a llamar el metodo que sobreescribimos
+            usuario,
+            token
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error'
+        })
+    }
+    /*return res.json({
+        ok: true,
+        msg: 'login'
+    })*/
 }
 
 module.exports = {
-    crearUsuario
+    crearUsuario,
+    login
 }
