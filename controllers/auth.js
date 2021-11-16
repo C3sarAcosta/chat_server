@@ -50,6 +50,7 @@ const crearUsuario = async (req, res = response) => {
     }
 }
 
+//Login
 const login = async (req, res = response) => {
     const { email, password } = req.body;
     try {
@@ -93,7 +94,16 @@ const login = async (req, res = response) => {
     })*/
 }
 
+//Renovar token
+const renewToken = async (req, res = response) => {
+    res.json({
+        ok: true,
+        uid: req.uid
+    });
+}
+
 module.exports = {
     crearUsuario,
-    login
+    login,
+    renewToken
 }
