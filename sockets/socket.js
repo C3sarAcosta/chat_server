@@ -14,6 +14,14 @@ io.on('connection', (client) => {
     //console.log('cliente autenticado');
     usuarioConectado(uid);
 
+    //Ingresar al usuario a un chat entre los 2 usuarios
+    client.join(uid);
+
+    //Escuchar del cliente el mensaje personal
+    client.on('mensaje-personal', (payload) => {
+        console.log(payload);
+    })
+
     client.on('disconnect', () => {
         usuarioDesconectado(uid);
     });
