@@ -20,6 +20,8 @@ io.on('connection', (client) => {
     //Escuchar del cliente el mensaje personal
     client.on('mensaje-personal', (payload) => {
         console.log(payload);
+        //Emitir mensaje a un canal
+        io.to(payload.para).emit('mensaje-personal', payload);
     })
 
     client.on('disconnect', () => {
